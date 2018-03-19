@@ -17,18 +17,30 @@ class User extends Component {
 
 
 
-    componentWillMount(){
-        axios.get('http://localhost:8000/items/user/'+ cookies.get('c_user'))
+    componentDidMount(){if(cookies.get('c_user')) {
+
+
+        axios.get('http://localhost:8000/items/user/' + cookies.get('c_user'))
             .then(response => {
-                this.setState({ items: response.data });
+                this.setState({items: response.data});
             })
             .catch(function (error) {
                 console.log(error);
-            }) ;
-        //.log(cookies.get('c_user'));
-       // this.state.items.photos=`../images/avatar/ ${this.state.items.photos}`;
-        //console.log( this.state.items.photos);
+            });
+
     }
+        else{
+        this.props.history.push('/login');
+    }
+        
+    }
+    // componentDidUpdate(){
+    //
+    //     window.location.reload();
+    // }
+    // shouldComponentUpdate(){
+    //     // window.location.reload();
+    // }
     //
     // handleSubmit(event) {
     //

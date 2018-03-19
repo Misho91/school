@@ -80,9 +80,9 @@ const storage = multer.diskStorage({
     },
 
     filename: function (req, file, cb) {
-        let fom = file.originalname.substr(file.originalname.length - 4);
-        file.originalname='avatar'+ i++ ;
-         let name = file.originalname +(fom.toLowerCase());
+        let fom = file.originalname.replace(/^.*\./, '');
+        file.originalname=req.session.user_id ;
+         let name = file.originalname +"."+ (fom.toLowerCase());
         file.originalname=name;
         cb(null, name)
 
@@ -114,7 +114,11 @@ console.log(item);
                    item.photos =req.file.originalname;
 
                     item.save().then(item => {
-                        res.json('Update complete');
+                      //
+                        //  res.json('Update complete');
+                       // console.log("Update complete");
+                       // res.end();
+                        res.redirect(req.get('referer'));
                     })
                         .catch(err => {
                             res.status(400).send("unable to update the database");

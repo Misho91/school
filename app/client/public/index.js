@@ -7,6 +7,8 @@ import AddItem from '../src/components/AddItem';
 import IndexItem from '../src/components/IndexItem';
 import EditItem from '../src/components/EditItem';
 import Lava from '../src/components/lava';
+import PasswordReset from '../src/components/passwordReset';
+
 import 'bootstrap/dist/css/bootstrap.css';
 //import 'bootstrap/dist/css/bootstrap-theme.css';
 import '../src/index.css';
@@ -32,6 +34,7 @@ ReactDOM.render(
             <Route path='/login' component={LogIn}/>
             <Route path='/web' component={Web}/>
             <Route path='/user' component={User}/>
+            <Route path='/passwordReset' component={PasswordReset}/>
         </div>
     </Router>,
 

@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // Define collection and schema for Items
-let Item = new Schema({
+let Learn = new Schema({
         firstName: {type: String, required: true},
         lastName: {type: String, required: true},
         username: {type: String, unique: true, required: true},
         email: {type: String, unique: true, sparse: true, email: true, required: true},
         phone: {type: String, index: {unique: true}, required: true},
-       // photo: {type: String, required: true},
+        // photo: {type: String, required: true},
         code:{type:String},
 
         // followers: [{
@@ -30,7 +30,8 @@ let Item = new Schema({
 
     },
     {
-        collection: 'items'
+        collection: 'Learn'
     });
 
-module.exports = mongoose.model('Item', Item);
+module.exports = mongoose.model('Learn', Learn);
+

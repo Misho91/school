@@ -19,7 +19,7 @@ let mailOptions = {
     from: 'misha.avetisyan.1991@gmail.com',
     to: aaa,
     subject: 'Sending Email using Node.js',
-    text: 'your code! '+ ss
+    text: 'your password! '+ ss
 };
 
 transporter.sendMail(mailOptions, function(error, info){

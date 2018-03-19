@@ -43,10 +43,12 @@ this.addIndexItem = new IndexItem();
                     const cookies = new Cookies();
                     cookies.set('c_user', res.data, { path: '/' });
 
-                    this.props.history.push('/user')
+                    this.props.history.push('/user');
+                    window.location.reload();
                 }
             })
             .catch(err => console.log(err))
+       
     }
 //   bac() {
 //      return this.simpleDialog.show();
@@ -57,6 +59,7 @@ this.addIndexItem = new IndexItem();
     paaa(){
 
       return  this.props.history.push('/user');
+        
     };
 
 
@@ -134,16 +137,19 @@ handleSubmit(event) {
     // )
 
     //console.log(a.error);
+   
 }
 
 
 
 
 render() {
-    // var  dialogStyles  = {
-    //     backgroundColor : '#e6e8eb',
-    //     height:'auto',
-    //     top:'35%'
+    // let  dialogStyles  = {
+    //     //backgroundColor : '#e6e8eb',
+    //   //  height:'auto',
+    //     //top:'35%'
+    //
+    //     listStyle: 'none'
     // } ;
 
     return (
@@ -182,6 +188,9 @@ render() {
                         /*disabled={!this.state.formValid}*/>Log In
                 </button>
 
+                <ul>
+                <li style={{listStyle: 'none'}}><a href="/passwordReset">Forgot password?</a></li>
+                </ul>
 
             </form>
 
