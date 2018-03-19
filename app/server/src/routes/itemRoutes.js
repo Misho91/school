@@ -6,9 +6,30 @@ const emailRouter = require('./emailRouter');
 const passwordHash = require('password-hash');
 const mongoose = require('mongoose');
 const db = mongoose.connection;
+const session = require('express-session');
+
 // Require Item model in our routes module
 const Item = require('../models/Item');
 //const nodeCookie = require('node-cookie');
+itemRouter.route('/headerc').get(function (req, res) {
+    //
+
+    req.session = null;
+    res.redirect('/');
+});
+
+itemRouter.route('/header/:id').get(function (req, res) {
+    let id = req.params.id;
+    Item.findById(id, function (err, item) {
+
+       let a= item;
+        let s={photos:"",username:''};
+        s.photos=a.photos;
+        s.username=a.username;
+        res.send(s);    });
+});
+
+
 
 itemRouter.route('/user/:id').get(function (req, res) {
     let id = req.params.id;
@@ -126,10 +147,15 @@ itemRouter.route('/update/:id').post(function (req, res) {
             return next(new Error('Could not load Document'));
         else {
             // do your updates here
-            item.item = req.body.item;
-
+           // item.item = req.body.item;
+            item.firstName = req.body.item.firstName;
+            item.lastName=req.body.item.lastName;
+            item.username=req.body.item.username;
+            item.email=req.body.item.email;
+            item.phone=req.body.item.phone;
             item.save().then(item => {
                 res.json('Update complete');
+
             })
                 .catch(err => {
                     res.status(400).send("unable to update the database");
@@ -148,5 +174,84 @@ itemRouter.route('/delete/:id').get(function (req, res) {
         });
 
 });
+
+
+itemRouter.route('/pass').post(function (req, res) {
+    Item.findById(req.session.user_id, function (err, item) {
+        if (!item)
+            return next(new Error('Could not load Document'));
+        else {
+            // do your updates here
+            // item.item = req.body.item;
+         let email=item.email;
+         let newPass=req.body.item;
+            let assword = passwordHash.generate(req.body.item);
+            item.code = assword;
+           // console.log(req.body.item);
+          //  item.code = req.body.item;
+
+            item.save().then(item => {
+                res.json('Update complete');
+                emailRouter(email, newPass);
+            })
+                .catch(err => {
+                    res.status(400).send("unable to update the database");
+                });
+        }
+    });
+
+});
+
+
+itemRouter.post('/passwordReset',(req, res) => {
+
+
+    let a = req.body.item;
+
+
+
+    Item.findOne({email: a}).then((item) =>{
+        if (item) {
+          let code="";
+            let getRandomCode = () => {
+                let letters = '0123456789ABCDEF';
+                let cod = '';
+                for (let i = 0; i < 6; i++) {
+                    cod += letters[Math.floor(Math.random() * 16)];
+                }
+
+                return code = cod;
+            };
+            getRandomCode();
+
+            let pass = code;
+           let email= item.email;
+            let assword = passwordHash.generate(code);
+            item.code = assword;
+
+
+            item.save()
+
+                .then(item => {
+                    res.status(200).json({Item: 'Item added successfully'});
+                    emailRouter(email, pass);
+                })
+                .catch(err => {
+                    res.status(400).send("unable to save to database");
+                });
+
+        }
+             else {
+
+                console.log("jjj");
+            }
+
+
+    });
+
+});
+
+
+
 
 module.exports = itemRouter;
